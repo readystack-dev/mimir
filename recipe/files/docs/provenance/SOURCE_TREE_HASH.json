@@ -1,0 +1,9 @@
+{
+  "schema": "kitforge.source_tree_hash.v1",
+  "slug": "mimir",
+  "repo": "https://github.com/grafana/mimir",
+  "ref": "mimir-3.2.4",
+  "commit": "4380c3492730d7fca3bc90e292aefe7fb6e8c42e",
+  "tree_listing_sha256": "c72aaf5b55bf2d3c82728908b33d3d70148399c3571b41d10a10673e456afe82",
+  "file_count": 15473
+}

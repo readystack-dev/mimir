@@ -1,0 +1,6 @@
+image_manifest_digest=sha256:15b9b2af9b5fcb7c8d3d42df9bca30053e9843326e2f6013100cc1d949c6184b
+config_digest=sha256:4bfe56239a9261544c7d32d4ef7b0a29d06879b973ee7915c5c5a5f68b9429f2
+tag=readystack/mimir:3.2.4-CE-ubuntu24.04-r2
+probe_port=8080
+probe_path=/ready
+probe_timeout=180

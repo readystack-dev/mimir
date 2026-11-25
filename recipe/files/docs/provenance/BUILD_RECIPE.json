@@ -1,0 +1,84 @@
+{
+  "schema": "kitforge.build_recipe.v1",
+  "slug": "mimir",
+  "image": "readystack/mimir:3.2.4-CE-ubuntu24.04-r2",
+  "build_method": "source-rebuild-go",
+  "source": {
+    "repo": "https://github.com/grafana/mimir",
+    "ref": "mimir-3.2.4",
+    "builder_image": "golang:1.26.10-bookworm",
+    "go_module_root": "github.com/grafana/mimir",
+    "go_version_required": "1.26.10",
+    "source_date_epoch": 1793383897,
+    "build_env": {
+      "CGO_ENABLED": "0",
+      "GOTOOLCHAIN": "local",
+      "GOFLAGS": "-mod=vendor"
+    },
+    "_version_note": "Retargeted 2026-10-22 to mimir-3.2.3, the latest GA (published 2026-10-22). The tag is `mimir-3.2.3`, NOT `v3.2.3` -- the repo also carries mimir-distributed-* Helm chart tags and pre-fork v1.x tags, so retarget_tag_pattern pins the product line. go.mod at mimir-3.2.3 declares `go 1.26.10` (3.2.1 said 1.26.7) with no toolchain directive, so the builder must ship >= 1.26.10 under GOTOOLCHAIN=local; the golang:1.26 builder is moved to its latest patch by retarget.py (L-A112). No go.work (L-A50).",
+    "_vendor_note": "Mimir COMMITS vendor/ (338 modules), so -mod=vendor builds offline straight from the checkout, same as tempo and unlike loki. A dep_bump still requires a re-vendor or the bumped module never physically reaches the build. Sets source.vendor_committed so the vendor stage KEEPS upstream's own vendor/ (338 modules) instead of running `go mod tidy -e && go mod vendor` over it. The knob applies only while dep_bumps is empty -- bumps are stated as floors by `go mod edit -require` and need the following tidy to MVS-reconcile them, so the moment a bump is added the normal tidy+re-vendor path returns automatically.",
+    "_submodule_note": "./mimir-build-image and ./operations/mimir-mixin-tools/screenshots are SEPARATE go modules holding CI and docs tooling. Neither is imported by any cmd/, and neither is built or shipped. The product binaries are all in the root module, so this is not the etcd multi-module case.",
+    "vendor_committed": true,
+    "source_date_epoch_provenance": "committer date of 4380c3492730d7fca3bc90e292aefe7fb6e8c42e, the commit tag mimir-3.2.4 points to (2026-10-30T18:11:37Z). Resolved via the public GitHub API by scripts/retarget.py; annotated tags are dereferenced to their commit, never the tagger date.",
+    "commit": "4380c3492730d7fca3bc90e292aefe7fb6e8c42e"
+  },
+  "binaries_from_source": [
+    {
+      "name": "mimir",
+      "main_pkg": "./cmd/mimir",
+      "cgo_enabled": 0,
+      "build_tags": [
+        "netgo",
+        "stringlabels"
+      ],
+      "build_flags": [
+        "-trimpath",
+        "-mod=vendor"
+      ],
+      "ldflags": "-s -w -X github.com/grafana/mimir/pkg/util/version.Version=@VERSION_BARE@ -X github.com/grafana/mimir/pkg/util/version.Branch=HEAD -X github.com/grafana/mimir/pkg/util/version.Revision=@COMMIT:8@",
+      "out_path": "/usr/bin/mimir",
+      "verify_subcmd": "-version",
+      "_note": "Makefile:250 MIMIR_VERSION := github.com/grafana/mimir/pkg/util/version and :255 stamps Version/Branch/Revision there -- NOT into main, as tempo does. Version is the contents of ./VERSION, the bare version with no leading v (@VERSION_BARE@). Revision is the short sha of the release tag's commit (@COMMIT:8@). `stringlabels` is in upstream's GO_TAGS and is not optional decoration: it selects a different in-memory label representation, so dropping it changes memory behaviour under load."
+    },
+    {
+      "name": "mimirtool",
+      "main_pkg": "./cmd/mimirtool",
+      "cgo_enabled": 0,
+      "build_tags": [
+        "netgo",
+        "stringlabels"
+      ],
+      "build_flags": [
+        "-trimpath",
+        "-mod=vendor"
+      ],
+      "ldflags": "-s -w",
+      "out_path": "/usr/bin/mimirtool",
+      "verify_subcmd": "--help",
+      "_note": "The operator CLI: loads and lints rule groups, inspects the ruler store, runs remote-read queries. Same module and therefore the same dependency set as mimir itself, so it adds no CVE surface. cmd/metaconvert (a block-metadata migration one-shot) and cmd/query-tee (a query-comparison proxy for upstream's own testing) are deliberately NOT built."
+    }
+  ],
+  "runtime_packages": [
+    "base-files",
+    "base-passwd",
+    "ca-certificates",
+    "coreutils",
+    "dash",
+    "libacl1",
+    "libc6",
+    "libpcre2-8-0",
+    "libselinux1",
+    "libssl3t64",
+    "openssl",
+    "tar",
+    "tzdata"
+  ],
+  "runtime_base": {
+    "kind": "chisel",
+    "shell": true,
+    "tools": [
+      "tar"
+    ],
+    "packages": "vendored/chisel/packages.tsv"
+  }
+}

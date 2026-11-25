@@ -1,0 +1,71 @@
+# ReadyStack Grafana Mimir single-binary (-target=all) filesystem config.
+# Derived from upstream docs/configurations/demo.yaml, with the four changes that config
+# needs before it is a product rather than a demonstration:
+#
+#  1. Data lives under /var/mimir, not /tmp/mimir. Upstream's demo writes every TSDB block,
+#     the compactor working set and the ruler store into /tmp -- which is exactly the
+#     directory a container is entitled to wipe. A metrics database that silently loses
+#     history on restart is worse than one that refuses to start.
+#  2. usage_stats.enabled is false. It defaults to TRUE (pkg/usagestats/reporter.go:58,
+#     flag -usage-stats.enabled), so an unmodified Mimir phones home. Off for an
+#     air-gapped install, and off on principle.
+#  3. log_level is info, not error. The demo silences the startup sequence, which is the
+#     part an operator needs when a ring will not form.
+#  4. http_listen_port is 8080 -- the binary's own default (pkg/mimir/mimir.go:758) rather
+#     than the demo's 9009, so the flag-only defaults and this file agree.
+#
+#  5. activity_tracker.filepath is /var/mimir/metrics-activity.log. Its default, ./metrics-activity.log,
+#     is relative to the working directory, and a non-root process started from / cannot create it
+#     (Mimir exits at start: 'failed to create activity file ... permission denied').
+#
+# multitenancy_enabled is false, so no X-Scope-OrgID header is required; every write and
+# read uses the implicit "anonymous" tenant. Turn it on for production, add TLS, and move
+# blocks_storage to real object storage.
+multitenancy_enabled: false
+
+server:
+  http_listen_port: 8080
+  log_level: info
+
+blocks_storage:
+  backend: filesystem
+  bucket_store:
+    sync_dir: /var/mimir/tsdb-sync
+  filesystem:
+    dir: /var/mimir/data/tsdb
+  tsdb:
+    dir: /var/mimir/tsdb
+
+compactor:
+  data_dir: /var/mimir/compactor
+  sharding_ring:
+    kvstore:
+      store: memberlist
+
+distributor:
+  ring:
+    instance_addr: 127.0.0.1
+    kvstore:
+      store: memberlist
+
+ingester:
+  ring:
+    instance_addr: 127.0.0.1
+    kvstore:
+      store: memberlist
+    replication_factor: 1
+
+store_gateway:
+  sharding_ring:
+    replication_factor: 1
+
+ruler_storage:
+  backend: filesystem
+  filesystem:
+    dir: /var/mimir/rules
+
+usage_stats:
+  enabled: false
+
+activity_tracker:
+  filepath: /var/mimir/metrics-activity.log
