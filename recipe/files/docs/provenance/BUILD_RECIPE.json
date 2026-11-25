@@ -1,15 +1,15 @@
 {
   "schema": "kitforge.build_recipe.v1",
   "slug": "mimir",
-  "image": "readystack/mimir:3.2.4-CE-ubuntu24.04-r2",
+  "image": "readystack/mimir:3.2.6-CE-ubuntu24.04-r1",
   "build_method": "source-rebuild-go",
   "source": {
     "repo": "https://github.com/grafana/mimir",
-    "ref": "mimir-3.2.4",
-    "builder_image": "golang:1.26.10-bookworm",
+    "ref": "mimir-3.2.6",
+    "builder_image": "golang:1.26.11-bookworm",
     "go_module_root": "github.com/grafana/mimir",
-    "go_version_required": "1.26.10",
-    "source_date_epoch": 1793383897,
+    "go_version_required": "1.26.11",
+    "source_date_epoch": 1795446614,
     "build_env": {
       "CGO_ENABLED": "0",
       "GOTOOLCHAIN": "local",
@@ -19,8 +19,10 @@
     "_vendor_note": "Mimir COMMITS vendor/ (338 modules), so -mod=vendor builds offline straight from the checkout, same as tempo and unlike loki. A dep_bump still requires a re-vendor or the bumped module never physically reaches the build. Sets source.vendor_committed so the vendor stage KEEPS upstream's own vendor/ (338 modules) instead of running `go mod tidy -e && go mod vendor` over it. The knob applies only while dep_bumps is empty -- bumps are stated as floors by `go mod edit -require` and need the following tidy to MVS-reconcile them, so the moment a bump is added the normal tidy+re-vendor path returns automatically.",
     "_submodule_note": "./mimir-build-image and ./operations/mimir-mixin-tools/screenshots are SEPARATE go modules holding CI and docs tooling. Neither is imported by any cmd/, and neither is built or shipped. The product binaries are all in the root module, so this is not the etcd multi-module case.",
     "vendor_committed": true,
-    "source_date_epoch_provenance": "committer date of 4380c3492730d7fca3bc90e292aefe7fb6e8c42e, the commit tag mimir-3.2.4 points to (2026-10-30T18:11:37Z). Resolved via the public GitHub API by scripts/retarget.py; annotated tags are dereferenced to their commit, never the tagger date.",
-    "commit": "4380c3492730d7fca3bc90e292aefe7fb6e8c42e"
+    "source_date_epoch_provenance": "the time release 3.2.6-CE-ubuntu24.04-r1 was cut (2026-11-23T15:10:14Z), by scripts/retarget.py: ReadyStack dates an image by when its release was packaged (owner 2026-11-10), recorded here once and used by every rebuild of the release; it builds upstream commit 634964f95676, dated 2026-11-17T23:59:19Z (source.commit_epoch).",
+    "commit": "634964f9567675883abf003393e9cd1cafcc584e",
+    "source_date_epoch_basis": "release-cut",
+    "commit_epoch": 1794959959
   },
   "binaries_from_source": [
     {

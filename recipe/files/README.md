@@ -1,14 +1,14 @@
-# Build kit for `readystack/mimir:3.2.4-CE-ubuntu24.04-r2`
+# Build kit for `readystack/mimir:3.2.6-CE-ubuntu24.04-r1`
 
-This archive rebuilds the linux/amd64 image `readystack/mimir:3.2.4-CE-ubuntu24.04-r2` from its own contents, with the network off, and checks the result against the image digest ReadyStack published, `sha256:15b9b2af9b5fcb7c8d3d42df9bca30053e9843326e2f6013100cc1d949c6184b` (also in `TARGET_DIGEST.txt`). It holds everything the build needs, not the image itself.
+This archive rebuilds the linux/amd64 image `readystack/mimir:3.2.6-CE-ubuntu24.04-r1` from its own contents, with the network off, and checks the result against the image digest ReadyStack published, `sha256:4c277a1cad1c62194c0a4c95d6a8d7fc5e95a9ee5cb46afab24781e74bcd186d` (also in `TARGET_DIGEST.txt`). It holds everything the build needs, not the image itself.
 
 ## Rebuild it
 
 You need linux/amd64 Docker with `buildx` 0.30 or later, `jq` and `tar` (docs/REBUILD.md lists the rest, if any, and the hardware ReadyStack used).
 
 ```
-tar -xpzf ReadyStack-mimir-3.2.4-CE-ubuntu24.04-r2.tar.gz    # -p keeps each file's mode
-cd 3.2.4-CE-ubuntu24.04-r2
+tar -xpzf ReadyStack-mimir-3.2.6-CE-ubuntu24.04-r1.tar.gz    # -p keeps each file's mode
+cd 3.2.6-CE-ubuntu24.04-r1
 ./BUILD_OFFLINE.sh            # builds with the network off, from this archive alone
 ./VERIFY_OFFLINE.sh           # compares the rebuilt digest with the published one, then checks the image
 ```
@@ -23,8 +23,8 @@ ReadyStack signs this archive's `rebuild.json` with its release key once the fin
 
 ```
 curl -fsSLo ../cosign.pub https://readystack.dev/keys/cosign.pub
-curl -fsSLo ../ReadyStack-mimir-3.2.4-CE-ubuntu24.04-r2.rebuild.json.sigstore https://readystack.dev/api/kit/mimir/3.2.4-CE-ubuntu24.04-r2/files/ReadyStack-mimir-3.2.4-CE-ubuntu24.04-r2.rebuild.json.sigstore
-python3 docs/rebuild-bundle/rebuild_bundle.py validate . --key ../cosign.pub --signature ../ReadyStack-mimir-3.2.4-CE-ubuntu24.04-r2.rebuild.json.sigstore
+curl -fsSLo ../ReadyStack-mimir-3.2.6-CE-ubuntu24.04-r1.rebuild.json.sigstore https://readystack.dev/api/kit/mimir/3.2.6-CE-ubuntu24.04-r1/files/ReadyStack-mimir-3.2.6-CE-ubuntu24.04-r1.rebuild.json.sigstore
+python3 docs/rebuild-bundle/rebuild_bundle.py validate . --key ../cosign.pub --signature ../ReadyStack-mimir-3.2.6-CE-ubuntu24.04-r1.rebuild.json.sigstore
 ```
 
 `validate` needs Python 3 and cosign. Without building anything it checks the signature over `rebuild.json`, every file's checksum, the tree hash over every file's path, mode and content, each base image layout's digest and the builder archive. `verify`, with the same arguments, also rebuilds with the builder's network egress blocked and exits 0 only when the rebuilt digest is the published one (docs/REBUILD.md).

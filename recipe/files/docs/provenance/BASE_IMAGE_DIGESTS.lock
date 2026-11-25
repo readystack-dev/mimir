@@ -1,2 +1,2 @@
 # base images for mimir (resolve at build_kit)
-golang:1.26.10-bookworm
+golang:1.26.11-bookworm

@@ -1,6 +1,6 @@
-image_manifest_digest=sha256:15b9b2af9b5fcb7c8d3d42df9bca30053e9843326e2f6013100cc1d949c6184b
-config_digest=sha256:4bfe56239a9261544c7d32d4ef7b0a29d06879b973ee7915c5c5a5f68b9429f2
-tag=readystack/mimir:3.2.4-CE-ubuntu24.04-r2
+image_manifest_digest=sha256:4c277a1cad1c62194c0a4c95d6a8d7fc5e95a9ee5cb46afab24781e74bcd186d
+config_digest=sha256:4ee7e7b6f60c672a6daeb8b78b1ab278f120955f5bc66307e816108ee69cec7c
+tag=readystack/mimir:3.2.6-CE-ubuntu24.04-r1
 probe_port=8080
 probe_path=/ready
 probe_timeout=180

@@ -52,7 +52,7 @@
     }
   ],
   "build_method": "source-rebuild-go",
-  "chain_id": 929,
+  "chain_id": 1205,
   "dep_bumps": [
     {
       "module": "github.com/go-jose/go-jose/v4",
@@ -73,17 +73,17 @@
   "expected_residuals": [],
   "images": [
     {
-      "digest": "sha256:632dff7351799a5a9954a48dc06670ade72ee44e8c351cdc0e5a57af2fea21af",
-      "ref": "golang:1.26.10-bookworm",
+      "digest": "sha256:dc40a13b61304647ed7e5d581d246b86413dfc29d63c6d018310feb93cd98fc0",
+      "ref": "golang:1.26.11-bookworm",
       "role": "builder"
     },
     {
-      "digest": "sha256:632dff7351799a5a9954a48dc06670ade72ee44e8c351cdc0e5a57af2fea21af",
-      "ref": "golang:1.26.10-bookworm",
+      "digest": "sha256:dc40a13b61304647ed7e5d581d246b86413dfc29d63c6d018310feb93cd98fc0",
+      "ref": "golang:1.26.11-bookworm",
       "role": "offline_builder"
     },
     {
-      "digest": "sha256:fe81560990fae86dc4743202b2cb4d3df98d0bcf949173cecef15ce1127ef852",
+      "digest": "sha256:9c7f200c07e3d4a03e7249d2c16bf66a51120fb876aa2242cf31451412543289",
       "ref": "ubuntu:24.04",
       "role": "base"
     }
@@ -104,15 +104,17 @@
       "GOFLAGS": "-mod=vendor",
       "GOTOOLCHAIN": "local"
     },
-    "builder_image": "golang:1.26.10-bookworm",
-    "commit": "4380c3492730d7fca3bc90e292aefe7fb6e8c42e",
+    "builder_image": "golang:1.26.11-bookworm",
+    "commit": "634964f9567675883abf003393e9cd1cafcc584e",
+    "commit_epoch": 1794959959,
     "go_module_root": "github.com/grafana/mimir",
-    "go_version_required": "1.26.10",
-    "ref": "mimir-3.2.4",
+    "go_version_required": "1.26.11",
+    "ref": "mimir-3.2.6",
     "repo": "https://github.com/grafana/mimir",
-    "source_date_epoch": 1793383897,
-    "source_date_epoch_provenance": "committer date of 4380c3492730d7fca3bc90e292aefe7fb6e8c42e, the commit tag mimir-3.2.4 points to (2026-10-30T18:11:37Z). Resolved via the public GitHub API by scripts/retarget.py; annotated tags are dereferenced to their commit, never the tagger date.",
+    "source_date_epoch": 1795446614,
+    "source_date_epoch_basis": "release-cut",
+    "source_date_epoch_provenance": "the time release 3.2.6-CE-ubuntu24.04-r1 was cut (2026-11-23T15:10:14Z), by scripts/retarget.py: ReadyStack dates an image by when its release was packaged (owner 2026-11-10), recorded here once and used by every rebuild of the release; it builds upstream commit 634964f95676, dated 2026-11-17T23:59:19Z (source.commit_epoch).",
     "vendor_committed": true
   },
-  "version": "3.2.4"
+  "version": "3.2.6"
 }

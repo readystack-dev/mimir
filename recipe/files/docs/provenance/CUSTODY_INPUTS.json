@@ -2,8 +2,8 @@
   "schema": "kitforge.custody_inputs.v1",
   "slug": "mimir",
   "repo": "https://github.com/grafana/mimir",
-  "ref": "mimir-3.2.4",
-  "commit": "4380c3492730d7fca3bc90e292aefe7fb6e8c42e",
+  "ref": "mimir-3.2.6",
+  "commit": "634964f9567675883abf003393e9cd1cafcc584e",
   "edition": "CE",
   "ce_audit": {
     "ce_only": true,
